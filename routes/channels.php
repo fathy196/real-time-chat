@@ -7,6 +7,6 @@ Broadcast::channel('chat.{userId}', function ($user, $userId) {
 });
 
 Broadcast::channel('typing.{userId}', function ($user, $userId) {
-    return true; // Allow all authenticated users to listen to typing events
+    return true;
 });
 

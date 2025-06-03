@@ -11,11 +11,11 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware('auth')->group(function (){
     Route::get('/users', [ChatController::class, 'index'])->name('users');
-    Route::get('/chat/{receiverID}', [ChatController::class, 'chat'])->name('chat');
-    Route::post('/chat/{receiverID}/send', [ChatController::class, 'sendMessage'])->name('chat.send');
-    Route::post('/chat/typing', [ChatController::class, 'typing'])->name('chat.typing');
+    Route::get('/chat/{receiverId}', [ChatController::class, 'chat'])->name('chat');
+    Route::post('/chat/{receiverId}/send', [ChatController::class, 'sendMessage']);
+    Route::post('/chat/typing', [ChatController::class, 'typing']);
     Route::post('/online', [ChatController::class, 'setOnline']);
     Route::post('/offline', [ChatController::class, 'setOffline']);
 });

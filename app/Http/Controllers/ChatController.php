@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
+use App\Events\UserTyping;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class ChatController extends Controller
 {
@@ -47,14 +50,18 @@ class ChatController extends Controller
     }
     public function typing(Request $request)
     {
-        // Logic to handle typing indication
+        broadcast(new UserTyping(Auth::id()))->toOthers();
+        return response()->json(['status' => 'Typing...']);
     }
-    public function setOnline(Request $request)
+    public function setOnline()
     {
-        // Logic to set the user as online
+        Cache::put('user-is-online-' . Auth::id(), true, now()->addMinutes(5));
+        return response()->json(['status' => 'Online']);
     }
-    public function setOffline(Request $request)
+
+    public function setOffline()
     {
-        // Logic to set the user as offline
+        Cache::forget('user-is-online-' . Auth::id());
+        return response()->json(['status' => 'Offline']);
     }
 }
